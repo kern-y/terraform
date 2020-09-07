@@ -23,3 +23,5 @@ Please note, ami-0010d386b82bc06f0 is Ubuntu Server 18.04 LTS
 generate SSH key pair with the name id_rsa and put it in ~/.ssh/
 ssh-keygen -t rsa -b 2048
 
+
+My result can be found [here](http://18.191.235.221)
