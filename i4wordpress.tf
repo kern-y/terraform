@@ -73,24 +73,24 @@ resource "aws_security_group" "rds_sg" {
 
     // outbound internet access
     egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
 resource "aws_key_pair" "mykeypair"{
-  key_name = "id_rsa"
+  key_name   = "id_rsa"
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
 resource "aws_instance" "wp-webserver" {
-	ami                         = var.instance_ami
-	instance_type               = var.instance_type
+  ami                         = var.instance_ami
+  instance_type               = var.instance_type
   root_block_device  {
-      volume_type = "gp2"
-      volume_size = 15
+      volume_type   = "gp2"
+      volume_size   = 15
     }
   key_name                    = aws_key_pair.mykeypair.key_name
   vpc_security_group_ids      = ["${aws_security_group.web_sg.id}"]
@@ -110,8 +110,4 @@ resource "aws_db_instance" "rds" {
   password               = var.rds_password
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
   skip_final_snapshot    = true
-}
-
-output "key_name"{
-  value = aws_key_pair.mykeypair.key_name
 }
