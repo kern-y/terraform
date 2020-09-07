@@ -13,6 +13,8 @@ This repository was created for educational purposes
 
 <h2>Before running terraform</h2>
 
+Clone this repo to your local machiene.
+<br>
 Please specify your RDS password in [variables.tf](variables.tf)
 <br>
 Please note, ami-0010d386b82bc06f0 is Ubuntu Server 18.04 LTS
