@@ -24,4 +24,4 @@ generate SSH key pair with the name id_rsa and put it in ~/.ssh/
 ssh-keygen -t rsa -b 2048
 
 
-My result can be found [here](http://18.191.235.221)
+My result can be found [here](http://18.191.235.221/admin)
