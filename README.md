@@ -4,11 +4,11 @@ This repository was created for educational purposes
 <h2>Prerequisites</h2>
 <br>
 
-<ol>
-<li> [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) </li> 
-<li> [AWS account](https://aws.amazon.com/free/) </li>
-<li> [AWS cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) </li>
-</ol>
+
+1. [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+2. [AWS account](https://aws.amazon.com/free/)
+3. [AWS cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) 
+
 
 
 <h2>Before running terraform</h2>
