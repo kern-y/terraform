@@ -1,9 +1,8 @@
 server {
              listen 80;
-             server_name {{ website_name }} www.{{ website_name }};
-               
+
              root {{ wordpress_dir }}/{{ website_name }};
-             
+
              access_log  /var/log/nginx/{{ website_name }}_access.log;
              error_log  /var/log/nginx/{{ website_name }}_error.log;
 
@@ -24,7 +23,7 @@ server {
                 try_files $uri =404;
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php-fpm.sock;
                 fastcgi_index index.php;
                 include fastcgi_params;
               }

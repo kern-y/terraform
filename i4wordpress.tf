@@ -149,7 +149,8 @@ resource "null_resource" "ansible" {
   }
   provisioner "remote-exec" {
     inline = ["cd ~/ansible",
-      "ansible-playbook site.yml -e@db-vars.yml"]
+      "export ANSIBLE_CONFIG=~/ansible/ansible.cfg",
+      "ansible-playbook -c local site.yml -e@db-vars.yml"]
   }
 }
 

@@ -4,14 +4,14 @@ user = www-data
 group = www-data
 
 ; Note: This value is mandatory.
-listen = /var/run/php5-fpm.sock
+listen = /var/run/php/php-fpm.sock
 
 ; Set permissions for unix socket.
 
 listen.owner = www-data
 listen.group = www-data
 listen.mode = 0660
- 
+
 ; Note: This value is mandatory.
 pm = dynamic
 
@@ -29,4 +29,3 @@ pm.max_spare_servers = 3
 
 ; Default Value: current directory or / when chroot
 chdir = /
- 

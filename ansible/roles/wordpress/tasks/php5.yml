@@ -1,40 +1,38 @@
 ---
-- name: Install the PHP5 Repository 
-  apt_repository: 
+- name: Install the PHP Repository
+  apt_repository:
     repo: "ppa:ondrej/php"
     state: present
- 
-- name: Update the Repositories 
-  apt: 
+
+- name: Update the Repositories
+  apt:
     update_cache: yes
- 
-- name: Install PHP5-FPM
-  apt: 
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - php5-fpm
-    - php5-cgi
-    - php5-cli
-    - php5-curl
-    - php5-json
-    - php5-odbc
-    - php5-tidy
-    - php5-common
-    - php5-xmlrpc
-    - php5-gd
+
+- name: Install PHP-FPM
+  apt:
+    pkg:
+    - php-fpm
+    - php-cgi
+    - php-cli
+    - php-curl
+    - php-json
+    - php-odbc
+    - php-tidy
+    - php-common
+    - php-xmlrpc
+    - php-gd
     - php-pear
-    - php5-dev
-    - php5-imap
-    - php5-mcrypt
-    - php5-mysqlnd
+    - php-dev
+    - php-imap
+    - php7.1-mcrypt
+    - php7.4-mysqlnd
 
 - name: Copy the custom settings
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - { src: 'www.conf.j2', dest: '/etc/php5/fpm/pool.d/www.conf' }
-    - { src: 'php.ini.j2', dest: '/etc/php5/fpm/php.ini' }
+    - { src: 'www.conf.j2', dest: '/etc/php/7.4/fpm/pool.d/www.conf' }
+    - { src: 'php.ini.j2', dest: '/etc/php/7.4/fpm/php.ini' }
   notify:
-    - Restart PHP5-FPM
+    - Restart PHP-FPM
