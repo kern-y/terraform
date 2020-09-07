@@ -152,3 +152,7 @@ resource "null_resource" "ansible" {
       "ansible-playbook site.yml -e@db-vars.yml"]
   }
 }
+
+output "webserver_public_IP" {
+  value = aws_instance.wp-webserver.public_ip
+}
