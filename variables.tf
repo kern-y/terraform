@@ -20,10 +20,6 @@ variable instance_ami {
   default = "ami-0010d386b82bc06f0"
 }
 
-variable ansible_cfg {
-  default = "../ansible/ansible.cfg"
-}
-
 variable rds_password {
   description = "Please define RDS MySQL password (min 8 length)"
   default     = "rdspassword1" #todo set to an env var

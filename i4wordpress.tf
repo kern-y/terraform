@@ -73,30 +73,31 @@ resource "aws_security_group" "rds_sg" {
 
     // outbound internet access
     egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
 resource "aws_key_pair" "mykeypair"{
-  key_name   = "id_rsa"
+  key_name = "id_rsa"
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
 resource "aws_instance" "wp-webserver" {
-  ami                         = var.instance_ami
-  instance_type               = var.instance_type
+	ami                         = var.instance_ami
+	instance_type               = var.instance_type
   root_block_device  {
-      volume_type   = "gp2"
-      volume_size   = 15
+      volume_type = "gp2"
+      volume_size = 15
     }
   key_name                    = aws_key_pair.mykeypair.key_name
   vpc_security_group_ids      = ["${aws_security_group.web_sg.id}"]
   subnet_id                   = data.aws_subnet.default_az1.id
   user_data                   = file("install_ansible.sh")
   associate_public_ip_address = true
+
 }
 
 resource "aws_db_instance" "rds" {
@@ -110,4 +111,44 @@ resource "aws_db_instance" "rds" {
   password               = var.rds_password
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
   skip_final_snapshot    = true
+}
+
+resource "null_resource" "ansible" {
+  triggers = {
+    cluster_instance = aws_db_instance.rds.id
+  }
+
+  provisioner "remote-exec" {
+    inline = ["echo remote-exec"]
+  }
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("~/.ssh/id_rsa")
+    host        = aws_instance.wp-webserver.public_ip
+  }
+
+  provisioner "local-exec" {
+    command = "echo DB_HOSTNAME: ${aws_db_instance.rds.address} >> ./ansible/db-vars.yml"
+  }
+  provisioner "local-exec" {
+    command = "echo DB_PORT: ${aws_db_instance.rds.port} >> ./ansible/db-vars.yml"
+  }
+  provisioner "local-exec" {
+    command = "echo DB_NAME: ${aws_db_instance.rds.name} >> ./ansible/db-vars.yml"
+  }
+  provisioner "local-exec" {
+    command = "echo DB_USERNAME: ${aws_db_instance.rds.username} >> ./ansible/db-vars.yml"
+  }
+  provisioner "local-exec" {
+    command = "echo DB_PASSWORD: ${aws_db_instance.rds.password} >> ./ansible/db-vars.yml"
+  }
+  provisioner "file"{
+    source      = "./ansible"
+    destination = "~/"
+  }
+  provisioner "remote-exec" {
+    inline = ["cd ~/ansible",
+      "ansible-playbook site.yml -e@db-vars.yml"]
+  }
 }
